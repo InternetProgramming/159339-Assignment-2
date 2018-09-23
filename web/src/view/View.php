@@ -59,7 +59,7 @@ class View
                 throw new customTemplateException('Template ' . $template . ' not found!');
 //                throw new customException('Template ' . $template . ' not found!');
             }
-        } catch (customException $e) {
+        } catch (customTemplateException $e) {
             echo $e->errorMessage();
         }
     }

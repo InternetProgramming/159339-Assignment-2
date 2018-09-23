@@ -29,7 +29,7 @@ class customTemplateException extends \Exception
      */
     public function customTemplateException($message, $code = 0)
     {
-        parent::__construct($message, $code)
+        parent::__construct($message, $code);
     }
 
 }
