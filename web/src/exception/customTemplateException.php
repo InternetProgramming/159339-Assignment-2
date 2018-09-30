@@ -9,9 +9,14 @@
 
 /**
  * Created by PhpStorm.
- * User: erdemalpkaya
- * Date: 24/09/18
- * Time: 12:13 AM
+ * customTemplateException class file
+ *
+ * PHP version 7.1
+ *
+ * @author  Junghoe Hwang <after10y@gmail.com>
+ * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
+ * @author  Robert Harper   <l.attitude37@gmail.com>
+ *
  */
 
 namespace team\a2\exception;
@@ -19,12 +24,10 @@ namespace team\a2\exception;
 /**
  * Class customTemplateException
  *
+ * An exception to be thrown when the template has an error for loading.
+ *
  *
  * @package team\a2\exception
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 
 

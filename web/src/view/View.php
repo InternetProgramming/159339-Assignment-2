@@ -45,6 +45,10 @@ class View
      */
     protected $data = array();
 
+    /**
+     * View constructor.
+     * @param $template
+     */
     public function __construct($template)
     {
         try {

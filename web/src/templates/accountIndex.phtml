@@ -1,18 +1,19 @@
 <?php include "header.phtml" ?>
-<!---------- Body starts --------------->
-<h1>Welcome to ..prepepep.</h1>
-The accounts are:
-<table>
-    <?php foreach ($accounts as $account) { ?>
-    <tr>
-        <td><?= $account->getId() ?></td>
-        <td><?= $account->getName() ?></td>
-        <td><a href= <?= $linkTo('accountDelete', ['id' => $account->getId()]);?> >delete</a></td>
-    </tr>
-    <?php } ?>
-</table>
+    <!---------- Body starts --------------->
+    <h1>Welcome to </h1>
+    Please sign in!
+    <table>
+        <?php foreach ($accounts as $account) { ?>
+            <tr>
+                <td><?= $account->getId() ?></td>
+                <td><?= $account->getName() ?></td>
+                <td><a href= <?= $linkTo('accountDelete', ['id' => $account->getId()]);?> >delete</a></td>
+            </tr>
+        <?php } ?>
+    </table>
 
-<a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
-<br>
-<!---------- Body ends -------------------->
+    <a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
+    <a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
+    <br>
+    <!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>

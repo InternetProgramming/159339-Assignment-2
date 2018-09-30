@@ -25,17 +25,17 @@ use PHPRouter\Route;
 
 $collection = new RouteCollection();
 
-// example of using a redirect to another route
-$collection->attachRoute(
-    new Route(
-        '/',
-        array(
-            '_controller' => 'team\a2\controller\HomeController::indexAction',
-            'methods' => 'GET',
-            'name' => 'Home'
-        )
-    )
-);
+//// example of using a redirect to another route
+//$collection->attachRoute(
+//    new Route(
+//        '/',
+//        array(
+//            '_controller' => 'team\a2\controller\HomeController::indexAction',
+//            'methods' => 'GET',
+//            'name' => 'Home'
+//        )
+//    )
+//);
 
 $collection->attachRoute(
     new Route(
@@ -47,6 +47,7 @@ $collection->attachRoute(
         )
     )
 );
+
 
 $collection->attachRoute(
     new Route(
@@ -80,6 +81,61 @@ $collection->attachRoute(
         )
     )
 );
+
+$collection->attachRoute(
+    new Route(
+        '/user/creating',array(
+            '_controller' => 'team\a2\controller\UserController::creatingAction',
+            'methods' => 'GET',
+            'name' => 'userCreating'
+        )
+    )
+);
+
+
+//// ----------------------    TRIALS ____________________________________   |||||||
+///
+
+
+$collection->attachRoute(
+    new Route(
+        '/login/',
+        array(
+            '_controller' => 'team\a2\controller\LoginController::indexAction',
+            'methods' => 'GET',
+            'name' => 'loginIndex'
+        )
+    )
+);
+
+
+
+// example of using a redirect to another route
+$collection->attachRoute(
+    new Route(
+        '/',
+        array(
+            '_controller' => 'team\a2\controller\HomePageController::indexAction',
+            'methods' => 'GET',
+            'name' => 'Home'
+        )
+    )
+);
+
+
+
+$collection->attachRoute(
+    new Route(
+        '/signup/',
+        array(
+            '_controller' => 'team\a2\controller\LoginController::indexAction',
+            'methods' => 'GET',
+            'name' => 'signup'
+        )
+    )
+);
+
+
 
 $router = new Router($collection);
 $router->setBasePath('/');
