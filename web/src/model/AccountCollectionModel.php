@@ -1,40 +1,29 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
-namespace team\a2\model;
+namespace agilman\a2\model;
 
 /**
  * Class AccountCollectionModel
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class AccountCollectionModel extends Model
 {
-    private $accountIds;
+    private $accountNums;
 
     private $N;
 
-    public function __construct()
+    private $cus_id;
+
+    public function __construct($id)
     {
         parent::__construct();
-        if (!$result = $this->db->query("SELECT `id` FROM `account`;")) {
-            // throw new ...
+        if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus = '$id';")) {
+            throw new Exception("No results of account number");
         }
-        $this->accountIds = array_column($result->fetch_all(), 0);
+        $this->accountNums = array_column($result->fetch_all(), 0);
         $this->N = $result->num_rows;
+        $this->cus_id = $id;
     }
 
     /**
@@ -44,10 +33,10 @@ class AccountCollectionModel extends Model
      */
     public function getAccounts()
     {
-        foreach ($this->accountIds as $id) {
+        foreach ($this->accountNums as $acc_num) {
             // Use a generator to save on memory/resources
             // load accounts from DB one at a time only when required
-            yield (new AccountModel())->load($id);
+            yield (new AccountModel())->load($acc_num);
         }
     }
 }

@@ -1,19 +1,30 @@
-<?php include "header.phtml" ?>
-    <!---------- Body starts --------------->
-    <h1>Welcome to </h1>
-    Please sign in!
-    <table>
-        <?php foreach ($accounts as $account) { ?>
-            <tr>
-                <td><?= $account->getId() ?></td>
-                <td><?= $account->getName() ?></td>
-                <td><a href= <?= $linkTo('accountDelete', ['id' => $account->getId()]);?> >delete</a></td>
-            </tr>
-        <?php } ?>
-    </table>
+<?php include "headerTeam.phtml" ?>
 
-    <a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
-    <a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
-    <br>
-    <!---------- Body ends -------------------->
+<!---------- Body starts --------------->
+
+<table>
+    <?php 
+    if(empty($accounts)){
+        echo "<h2> Don't have Any Accounts </h2>";  
+    }else{
+        echo "<h2> The accounts are:</h2>";
+        echo " <tr>";
+        echo "<td> Account Number </td>";
+        echo "<td> Customer Id </td>";
+        echo "<td> Balance </td></tr>";
+        foreach ($accounts as $account) { 
+            echo "
+        <td>". $account->getAccountNum() . "</td>
+        <td>".  $account->getCustomerId() ." </td>
+        <td>". $account->getBalance() ."</td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " >delete</a></td>
+    </tr> ";
+        }
+    }
+    ?>
+</table>
+
+<a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
+<br>
+<!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>

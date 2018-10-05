@@ -1,36 +1,22 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
 /**
  * Created by PhpStorm.
  * User: andrew
+ * Date: 30/08/17
+ * Time: 4:38 PM
  */
 
-namespace team\a2\view;
+namespace agilman\a2\view;
 
-use const team\a2\APP_ROOT;
-use team\a2\exception\customTemplateException;
-
+use const agilman\a2\APP_ROOT;
 /**
  * Class View
  *
  * A wrapper for the view templates.
  * Limits the accessible scope available to phtml templates.
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class View
 {
@@ -45,10 +31,6 @@ class View
      */
     protected $data = array();
 
-    /**
-     * View constructor.
-     * @param $template
-     */
     public function __construct($template)
     {
         try {
@@ -60,10 +42,9 @@ class View
             if (file_exists($file)) {
                 $this->template = $file;
             } else {
-                throw new customTemplateException('Template ' . $template . ' not found!');
 //                throw new customException('Template ' . $template . ' not found!');
             }
-        } catch (customTemplateException $e) {
+        } catch (customException $e) {
             echo $e->errorMessage();
         }
     }

@@ -1,49 +1,51 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
 use PHPRouter\RouteCollection;
 use PHPRouter\Router;
 use PHPRouter\Route;
 
-/**
- * @package team/a2
- *
- * Code foundation by:
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
- *
- */
-
 $collection = new RouteCollection();
 
-//// example of using a redirect to another route
-//$collection->attachRoute(
-//    new Route(
-//        '/',
-//        array(
-//            '_controller' => 'team\a2\controller\HomeController::indexAction',
-//            'methods' => 'GET',
-//            'name' => 'Home'
-//        )
-//    )
-//);
+// example of using a redirect to another route
+$collection->attachRoute(
+    new Route(
+        '/',
+        array(
+            '_controller' => 'agilman\a2\controller\HomeController::indexAction',
+            'methods' => 'GET',
+            'name' => 'Home'
+        )
+    )
+);
 
 $collection->attachRoute(
     new Route(
-        '/account/',
+        '/login/',
         array(
-        '_controller' => 'team\a2\controller\AccountController::indexAction',
-        'methods' => 'GET',
-        'name' => 'accountIndex'
+            '_controller' => 'agilman\a2\controller\CustomerController::Login',
+            'methods' => ['GET','POST'],
+            'name' => 'Login'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
+        '/signup/',
+        array(
+            '_controller' => 'agilman\a2\controller\CustomerController::Signup',
+            'methods' => ['GET','POST'],
+            'name' => 'Signup'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
+        '/logout/',
+        array(
+            '_controller' => 'agilman\a2\controller\CustomerController::Logout',
+            'methods' => ['GET','POST'],
+            'name' => 'Logout'
         )
     )
 );
@@ -51,10 +53,21 @@ $collection->attachRoute(
 
 $collection->attachRoute(
     new Route(
+        '/account/',
+        array(
+        '_controller' => 'agilman\a2\controller\AccountController::indexAction',
+        'methods' => 'GET',
+        'name' => 'accountIndex'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
         '/account/create/',
         array(
-        '_controller' => 'team\a2\controller\AccountController::createAction',
-        'methods' => 'GET',
+        '_controller' => 'agilman\a2\controller\AccountController::createAction',
+        'methods' => ['GET','POST'],
         'name' => 'accountCreate'
         )
     )
@@ -64,7 +77,7 @@ $collection->attachRoute(
     new Route(
         '/account/delete/:id',
         array(
-        '_controller' => 'team\a2\controller\AccountController::deleteAction',
+        '_controller' => 'agilman\a2\controller\AccountController::deleteAction',
         'methods' => 'GET',
         'name' => 'accountDelete'
         )
@@ -75,67 +88,12 @@ $collection->attachRoute(
     new Route(
         '/account/update/:id',
         array(
-        '_controller' => 'team\a2\controller\AccountController::updateAction',
+        '_controller' => 'agilman\a2\controller\AccountController::updateAction',
         'methods' => 'GET',
         'name' => 'accountUpdate'
         )
     )
 );
-
-$collection->attachRoute(
-    new Route(
-        '/user/creating',array(
-            '_controller' => 'team\a2\controller\UserController::creatingAction',
-            'methods' => 'GET',
-            'name' => 'userCreating'
-        )
-    )
-);
-
-
-//// ----------------------    TRIALS ____________________________________   |||||||
-///
-
-
-$collection->attachRoute(
-    new Route(
-        '/login/',
-        array(
-            '_controller' => 'team\a2\controller\LoginController::indexAction',
-            'methods' => 'GET',
-            'name' => 'loginIndex'
-        )
-    )
-);
-
-
-
-// example of using a redirect to another route
-$collection->attachRoute(
-    new Route(
-        '/',
-        array(
-            '_controller' => 'team\a2\controller\HomePageController::indexAction',
-            'methods' => 'GET',
-            'name' => 'Home'
-        )
-    )
-);
-
-
-
-$collection->attachRoute(
-    new Route(
-        '/signup/',
-        array(
-            '_controller' => 'team\a2\controller\LoginController::indexAction',
-            'methods' => 'GET',
-            'name' => 'signup'
-        )
-    )
-);
-
-
 
 $router = new Router($collection);
 $router->setBasePath('/');

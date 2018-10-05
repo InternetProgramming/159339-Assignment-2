@@ -1,53 +1,59 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
-namespace team\a2\model;
+namespace agilman\a2\model;
 
 
 /**
  * Class AccountModel
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class AccountModel extends Model
 {
     /**
-     * @var integer Account ID
+     * @var integer Account Number
      */
-    private $id;
+    private $acc_number;
     /**
-     * @var string Account Name
+     * @var string Customer Id
      */
-    private $name;
+    private $acc_cus;
+
+    private $balance;
+
+    private $created_at;
 
 
     /**
-     * @return int Account ID
+     * @return string Account Number
      */
-    public function getId()
+    public function getAccountNum()
     {
-        return $this->id;
+        return $this->acc_number;
     }
 
     /**
-     * @return string Account Name
+     * @return string Customer ID
      */
-    public function getName()
+    public function getCustomerId()
     {
-        return $this->name;
+        return $this->acc_cus;
+    }
+
+    /**
+     * @return float balance
+     */
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @return string Customer ID
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 
     /**
@@ -55,12 +61,35 @@ class AccountModel extends Model
      *
      * @return $this AccountModel
      */
-    public function setName(string $name)
+    public function setAccNumber($accNumber)
     {
-        $this->name = $name;
+        $this->acc_number = $accNumber;
 
         return $this;
     }
+
+    public function setCustomerId($cust_id)
+    {
+        $this->acc_cus = $cust_id;
+
+        return $this;
+    }
+
+    public function setBalance($bal)
+    {
+        $this->balance = $bal;
+
+        return $this;
+    }
+
+    public function setCreatedAt($time)
+    {
+        $this->created_at = $time;
+
+        return $this;
+    }
+
+    
 
     /**
      * Loads account information from the database
@@ -69,16 +98,16 @@ class AccountModel extends Model
      *
      * @return $this AccountModel
      */
-    public function load($id)
+    public function load($acc_num)
     {
-        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `id` = $id;")) {
-            // throw new ...
-        }
-
+        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num';")) {
+            throw new Exception("No Result");
+        } 
         $result = $result->fetch_assoc();
-        $this->name = $result['name'];
-        $this->id = $id;
-
+        $this->acc_number = $result['acc_number'];
+        $this->acc_cus = $result['acc_cus'];
+        $this->balance = $result['acc_balance'];
+        $this->created_at = $result['created_at'];
         return $this;
     }
 
@@ -89,19 +118,25 @@ class AccountModel extends Model
      */
     public function save()
     {
-        $name = $this->name ?? "NULL";
-        if (!isset($this->id)) {
+        session_start();
+        $acc_cus = $this->acc_cus;
+        $balance = $this->balance;
+        $created_at = $this->created_at;
+        if (!isset($this->acc_number)) {
             // New account - Perform INSERT
-            if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$name');")) {
+            if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at');")) {
                 // throw new ...
             }
-            $this->id = $this->db->insert_id;
-        } else {
+            $this->acc_number = $this->db->insert_id;
+        } 
+        /* We may not need to update account information in general.
+        else {
             // saving existing account - perform UPDATE
-            if (!$result = $this->db->query("UPDATE `account` SET `name` = '$name' WHERE `id` = $this->id;")) {
+            if (!$result = $this->db->query("UPDATE $table SET `name` = '$name' WHERE `id` = $this->id;")) {
                 // throw new ...
-            }
+            } 
         }
+         */
 
         return $this;
     }
@@ -113,7 +148,7 @@ class AccountModel extends Model
      */
     public function delete()
     {
-        if (!$result = $this->db->query("DELETE FROM `account` WHERE `account`.`id` = $this->id;")) {
+        if (!$result = $this->db->query("DELETE FROM `account` WHERE `account_number` = $this->$acc_number;")) {
             //throw new ...
         }
 

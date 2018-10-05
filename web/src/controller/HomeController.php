@@ -1,26 +1,13 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
-namespace team\a2\controller;
+namespace agilman\a2\controller;
+use agilman\a2\view\View;
 
 
 /**
  * Class HomeController
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class HomeController extends Controller
 {
@@ -29,6 +16,9 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        $this->redirect('accountIndex');
+        session_start();
+        $view = new View('main');
+        echo $view->render();
+        //$this->redirect('accountIndex');
     }
 }

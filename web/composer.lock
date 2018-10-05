@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7314c85f47cb2e74d8460ff9c95b9b99",
+    "content-hash": "f5726bc8781adb29e7a82ba1164d8fdb",
     "packages": [
         {
             "name": "dannyvankooten/php-router",

@@ -1,28 +1,13 @@
 <?php
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
-namespace team\a2\model;
+namespace agilman\a2\model;
 
 use mysqli;
-use team\a2\exception\MySQLDatabaseQueryException;
 
 /**
  * Class Model
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class Model
 {
@@ -32,28 +17,25 @@ class Model
     const DB_HOST = 'mysql';
     const DB_USER = 'root';
     const DB_PASS = 'root';
-    const DB_NAME = 'team_a2';
+    const DB_NAME = 'a2';
 
-    /**
-     * Model constructor.
-     * @throws MySQLDatabaseQueryException
-     */
     public function __construct()
     {
         $this->db = new mysqli(
             Model::DB_HOST,
             Model::DB_USER,
-            Model::DB_PASS,
-            Model::DB_NAME
+            Model::DB_PASS
+            //Model::DB_NAME
         );
 
         if (!$this->db) {
             // can't connect to MYSQL???
             // handle it...
             // e.g. throw new someException($this->db->connect_error, $this->db->connect_errno);
-            throw new MySQLDatabaseQueryException($this->db->connect_error,$this->db->connect_errno);
         }
 
+        //----------------------------------------------------------------------------
+        // Customer Table
         //----------------------------------------------------------------------------
         // This is to make our life easier
         // Create your database and populate it with sample data
@@ -61,104 +43,75 @@ class Model
 
         if (!$this->db->select_db(Model::DB_NAME)) {
             // somethings not right.. handle it
-            throw new MySQLDatabaseQueryException("Failed Query for Database");
             error_log("Mysql database not available!", 0);
         }
 
-        $result = $this->db->query("SHOW TABLES LIKE 'account';");
+        $result = $this->db->query("SHOW TABLES LIKE `customer`;");
 
         if ($result->num_rows == 0) {
             // table doesn't exist
             // create it and populate with sample data
 
             $result = $this->db->query(
-                "CREATE TABLE `account` (
-                                          `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-                                          `name` varchar(256) DEFAULT NULL,
-                                          PRIMARY KEY (`id`) );"
+                "CREATE TABLE customer (
+                    cus_id int(8) unsigned NOT NULL auto_increment,
+                    cus_fname varchar(80),
+                    cus_lname varchar(80),
+                    cus_address varchar(255),
+                    cus_username varchar(10),
+                    cus_password varchar(255),
+                    cus_dob varchar(80),
+                    cus_phone varchar(80),
+                    cus_created_at varchar(80),
+                    primary key (cus_id),
+                    UNIQUE(cus_username));"
             );
 
             if (!$result) {
                 // handle appropriately
-                throw new MySQLDatabaseQueryException("Failed creating the Table");
                 error_log("Failed creating table account", 0);
             }
-
-
+            $this->db->query("alter table customer auto_increment = 1000000;");
+            
+            // We cannot insert sample data because of encrytion for password
+            /*
             if (!$this->db->query(
-                "INSERT INTO `account` VALUES (NULL,'Bob'), (NULL,'Mary');"
-                )) {
-                // handle appropriately
-                error_log("Failed creating sample data!", 0);
-                }
-
-        }
-
-    /*//------------    // Trial table ------------------------
-        $result = $this->db->query("SHOW TABLES LIKE 'trans';");
-
-        if ($result->num_rows == 0) {
-            // table doesn't exist
-            // create it and populate with sample data
-
-            $result = $this->db->query(
-                "CREATE TABLE `Transaction` (
-                                          `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-                                          `name` varchar(256) DEFAULT NULL,
-                                          PRIMARY KEY (`id`) );"
-            );
-
-            if (!$result) {
-                // handle appropriately
-                throw new MySQLDatabaseQueryException("Failed creating the Table");
-                error_log("Failed creating table account", 0);
-            }
-
-
-            if (!$this->db->query(
-                "INSERT INTO `Transaction` VALUES (NULL,'Bob'), (NULL,'Mary');"
+                "INSERT INTO `customer` VALUES (NULL,'Bob', 'Johnson', '23 Massey Road Auckland', 'bob101', ''), (NULL,'Mary');"
             )) {
                 // handle appropriately
                 error_log("Failed creating sample data!", 0);
             }
+            */
 
         }
+        //----------------------------------------------------------------------------
+        // Account Table
+        //----------------------------------------------------------------------------
 
-        //Trial USer ---------
+        $result = $this->db->query("SHOW TABLES LIKE `account`;");
 
-        $result = $this->db->query("SHOW TABLES LIKE 'User';");
-
-        if($result->num_rows == 0) {
-            //table doesn't exist
-            //create it and populate with sample data
+        if ($result->num_rows == 0) {
+            // table doesn't exist
+            // create it and populate with sample data
 
             $result = $this->db->query(
-                "CREATE TABLE `User` (
-                              `Username` VARCHAR (20) NOT NULL,
-                              `Password` VARCHAR (20) NOT NULL,
-                              `UserID` INT NOT NULL AUTO_INCREMENT,
-                              UNIQUE (`Username`),
-                              PRIMARY KEY (`UserID`)
-                               );"
+                "Create table account(
+                    acc_number int(8) unsigned NOT NULL auto_increment,
+                    acc_cus int(8) unsigned,
+                    acc_balance DECIMAL(13,2),
+                    created_at varchar(80),
+                    PRIMARY KEY (acc_number),
+                    FOREIGN KEY fk_cus(acc_cus) REFERENCES customer(cus_id)
+                );"
             );
 
-            if(!$result) {
-                throw new MySQLDatabaseQueryException("Failed creating table User");
-                error_log("Failed creating table User",0);
+            $this->db->query("alter table account auto_increment = 1000000;");
 
-
-                if (!$this->db->query(
-                    "INSERT INTO `User` VALUES (NULL,'Bob'), (NULL,'Mary');"
-                )) {
-                    // handle appropriately
-                    error_log("Failed creating sample data!", 0);
-                }}
+            if (!$result) {
+                // handle appropriately
+                error_log("Failed creating table account", 0);
+            }
+            
         }
-
-*/
-
-
-
-        //----------------------------------------------------------------------------
     }
 }

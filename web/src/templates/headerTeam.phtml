@@ -43,17 +43,27 @@
 <body>
 
 <div class="navbar">
-    <a class="active" href="#"><i class="fas fa-piggy-bank"></i> FNBank</a>
+    <a class="active" href=<?= $linkTo('Home'); ?>><i class="fas fa-piggy-bank"></i> FNBank</a>
     <div class="topnav-right">
         <a href="#"><i class="fa fa-fw fa-search"></i> About Us</a>
-        <a href="#"><i class="far fa-user"></i> Sign-Up</a>
-        <a href="#"><i class="far fa-hand-point-right"></i> Login</a>
+        <?php 
+        session_start();
+        if ($_SESSION['loggedin']){ 
+            echo "<a href= ".$linkTo('accountIndex')."> <i class='far fa-hand-point-right'></i> Account </a>";
+        }
+        else{
+            echo "<a href= ".$linkTo('Signup')."> <i class='far fa-hand-point-right'></i> Sign-up</a>";
+        }
+        if ($_SESSION['loggedin']){ 
+            echo "<a href= ".$linkTo('Logout')."> <i class='far fa-hand-point-right'></i> Logout</a>";
+        }
+        else{
+            echo "<a href= ".$linkTo('Login')."> <i class='far fa-hand-point-right'></i> Login</a>";
+        }
+        ?>
     </div>
 </div>
 
 </body>
 </html>
 
-
-
-<?php include "footer.phtml" ?>

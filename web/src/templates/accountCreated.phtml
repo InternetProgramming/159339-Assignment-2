@@ -1,7 +1,21 @@
-<?php include "header.phtml" ?>
-    <!---------- Body starts --------------->
-    Account <?= $accountId ?> created successfully. <br>
-    <a href=<?= $linkTo('accountIndex'); ?>>Back</a>
-    <br>
+<?php include "headerTeam.phtml" ?>
+<!---------- Body starts --------------->
+<?php
+
+session_start();
+if($complete){
+  echo"<h2><center> Your account " . $acc_num. " has been created </h2>";
+
+}else{
+  echo "<form action= '$action' method='POST'>
+  <h2> Are you sure to create an account? </h2>
+  <input type='submit'  class='button' name='create' value='Yes' />
+  <input type='submit'  class='button' name='back' value='No' />
+  </form>";
+}
+?>
+
+<br>
+
     <!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>

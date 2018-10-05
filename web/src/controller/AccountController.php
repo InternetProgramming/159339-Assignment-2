@@ -1,29 +1,13 @@
 <?php
-
-/*
-*
-* Junghoe(Peter) Hwang - 16242934
-* Erdem Alpkaya        - 16226114
-* Robert Harper        - 96066919
-*
-*/
-namespace team\a2\controller;
-
-use team\a2\model\{AccountModel, AccountCollectionModel};
-use team\a2\view\View;
+namespace agilman\a2\controller;
+use agilman\a2\model\{AccountModel, AccountCollectionModel};
+use agilman\a2\view\View;
 
 /**
  * Class AccountController
  *
- * @package team/a2
- *
- * Code foundation by:
+ * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- *
- *
- * @author  Junghoe Hwang <after10y@gmail.com>
- * @author Erdem Alpkaya <erdemalpkaya@gmail.com>
- * @author  Robert Harper   <l.attitude37@gmail.com>
  */
 class AccountController extends Controller
 {
@@ -32,24 +16,43 @@ class AccountController extends Controller
      */
     public function indexAction()
     {
-        $collection = new AccountCollectionModel();
+        session_start();
+        $collection = new AccountCollectionModel($_SESSION['cus_id']);
         $accounts = $collection->getAccounts();
         $view = new View('accountIndex');
-        echo $view->addData('accounts', $accounts)->render();
+        $view->addData('accounts', $accounts);
+        echo $view->render();
     }
     /**
      * Account Create action
      */
     public function createAction()
     {
-        $account = new AccountModel();
-        $names = ['Bob','Mary','Jon','Peter','Grace'];
-        shuffle($names);
-        $account->setName($names[0]); // will come from Form data
-        $account->save();
-        $id = $account->getId();
-        $view = new View('accountCreated');
-        echo $view->addData('accountId', $id)->render();
+        session_start();
+        
+        if(!empty($_POST['create'] || !empty($_POST['back'])))
+        {
+            if(strcmp($_POST['create'], "Yes")===0){
+                $account = new AccountModel();
+                $account->setCustomerId($_SESSION['cus_id']);
+                $account->setBalance(0);
+                $account->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
+                $account->save();
+                $view = new View('accountCreated');
+                $view->addData("complete", true);
+                $view->addData("acc_num", $account->getAccountNum());
+                echo $view->render();
+            }
+            else if(strcmp($_POST['back'], "No")===0){
+                $this->redirect('accountIndex');
+            }
+        }
+        else {
+            $view = new View('accountCreated');
+            echo $view->render();
+        }   
+
+        
     }
 
     /**

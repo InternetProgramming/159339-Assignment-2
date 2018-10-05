@@ -1,0 +1,65 @@
+
+
+<?php
+
+/**
+ * Created by PhpStorm.
+ * User: erdemalpkaya
+ * Date: 2/10/18
+ * Time: 3:15 PM
+ */
+
+include "headerTeam.phtml" ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+
+        /* Images used */
+        .img1 { background-image: url("https://images.unsplash.com/photo-1482017276394-d2ddc6d4c978?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6a470a81a17cfa98f0b35ebb16987f7b&auto=format&fit=crop&w=1950&q=80"); }
+
+
+        /* Position text in the middle of the page/image */
+        .bg-text {
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            border: 10px solid #34495E;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            width: 800px;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="img1">
+
+
+<?php 
+echo '<div class="bg-text"> Congratulations. Username '. $username .' Created </div>';
+echo "<a href= ".$linkTo('accountCreate')."> Created Account</a>";
+?> 
+</body>
+</html>
+
+
+<?php include "footer.phtml" ?>

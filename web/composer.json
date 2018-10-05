@@ -1,5 +1,5 @@
 {
-  "name": "team/a2",
+  "name": "agilman/a2",
   "version": "0.0.1",
   "description": "Massey University Internet Programming 159.339 Assignment 2",
   "require": {
@@ -13,7 +13,7 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "team\\a2\\": "src/"
+      "agilman\\a2\\": "src/"
     }
   }
 }
