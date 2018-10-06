@@ -1,5 +1,6 @@
 <?php
 namespace agilman\a2\model;
+use agilman\a2\Exceptions\BankExceptions;
 
 
 /**
@@ -89,7 +90,6 @@ class AccountModel extends Model
         return $this;
     }
 
-    
 
     /**
      * Loads account information from the database
@@ -97,11 +97,12 @@ class AccountModel extends Model
      * @param int $id Account ID
      *
      * @return $this AccountModel
+     * @throws BankExceptions
      */
     public function load($acc_num)
     {
         if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num';")) {
-            throw new Exception("No Result");
+            throw new BankExceptions("No Result");
         } 
         $result = $result->fetch_assoc();
         $this->acc_number = $result['acc_number'];
@@ -113,43 +114,43 @@ class AccountModel extends Model
 
     /**
      * Saves account information to the database
-
      * @return $this AccountModel
+     * @throws BankExceptions
      */
     public function save()
     {
-        session_start();
         $acc_cus = $this->acc_cus;
         $balance = $this->balance;
         $created_at = $this->created_at;
         if (!isset($this->acc_number)) {
             // New account - Perform INSERT
             if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at');")) {
-                // throw new ...
+                throw new BankExceptions("No account for insertion data");
             }
             $this->acc_number = $this->db->insert_id;
         } 
-        /* We may not need to update account information in general.
         else {
             // saving existing account - perform UPDATE
-            if (!$result = $this->db->query("UPDATE $table SET `name` = '$name' WHERE `id` = $this->id;")) {
-                // throw new ...
+            if (!$result = $this->db->query("UPDATE account SET `acc_balance` = '$balance' WHERE `acc_number` = '$this->acc_number';")) {
+                throw new BankExceptions("Cannot Update");
             } 
         }
-         */
 
         return $this;
     }
 
     /**
      * Deletes account from the database
-
      * @return $this AccountModel
+     * @throws BankExceptions
      */
     public function delete()
     {
-        if (!$result = $this->db->query("DELETE FROM `account` WHERE `account_number` = $this->$acc_number;")) {
-            //throw new ...
+        // put if
+        // to check whether account balance is zero or not.
+        // maybe using pop-up : echo "<script type='text/javascript'>alert(not zero);</script>";
+        if (!$result = $this->db->query("DELETE FROM `account` WHERE `acc_number` = '$this->acc_number';")) {
+            throw new BankExceptions("Could not Delete ");
         }
 
         return $this;

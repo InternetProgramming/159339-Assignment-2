@@ -5,6 +5,12 @@
 session_start();
 if($complete){
   echo"<h2><center> Your account " . $acc_num. " has been created </h2>";
+  echo"
+  <script>
+  setTimeout(function () {
+   window.location.href= 'http://localhost:8000/account';},5000);
+  </script>
+  ";
 
 }else{
   echo "<form action= '$action' method='POST'>

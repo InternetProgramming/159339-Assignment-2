@@ -10,14 +10,15 @@
         echo "<h2> The accounts are:</h2>";
         echo " <tr>";
         echo "<td> Account Number </td>";
-        echo "<td> Customer Id </td>";
-        echo "<td> Balance </td></tr>";
+        echo "<td>     Balance    </td></tr>";
         foreach ($accounts as $account) { 
             echo "
-        <td>". $account->getAccountNum() . "</td>
-        <td>".  $account->getCustomerId() ." </td>
-        <td>". $account->getBalance() ."</td>
-        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " >delete</a></td>
+        <td><center>". $account->getAccountNum() . "</center></td>
+        <td><center>". $account->getBalance() ."</center></td>
+        <td> <a href=" .$linkTo('withdraw', ['id' => $account->getAccountNum()]) . " > Withdraw </a></td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Deposit </a></td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Transfer </a></td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Close </a></td>
     </tr> ";
         }
     }

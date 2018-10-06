@@ -1,6 +1,8 @@
 <?php
 namespace agilman\a2\model;
 
+use agilman\a2\Exceptions\BankExceptions;
+
 /**
  * Class AccountCollectionModel
  *
@@ -19,7 +21,7 @@ class AccountCollectionModel extends Model
     {
         parent::__construct();
         if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus = '$id';")) {
-            throw new Exception("No results of account number");
+            throw new BankExceptions("No result of Account number");
         }
         $this->accountNums = array_column($result->fetch_all(), 0);
         $this->N = $result->num_rows;

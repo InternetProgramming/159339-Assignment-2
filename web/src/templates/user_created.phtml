@@ -56,10 +56,14 @@ include "headerTeam.phtml" ?>
 
 <?php 
 echo '<div class="bg-text"> Congratulations. Username '. $username .' Created </div>';
-echo "<a href= ".$linkTo('accountCreate')."> Created Account</a>";
 ?> 
 </body>
 </html>
+<script>
+setTimeout(function () {
+   window.location.href= 'http://localhost:8000/login'; // the redirect goes here
 
+},5000);
+</script>
 
 <?php include "footer.phtml" ?>

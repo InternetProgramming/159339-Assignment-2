@@ -19,32 +19,38 @@ class CustomerController extends Controller
 
     public function Login()
     {
+        //Start our session.
         session_start();
-        if(!empty($_POST)){
-            $username = htmlspecialchars($_POST["username"]);        
-            $password = htmlspecialchars($_POST["psw"]); 
-            $customers = new CustomerCollectionModel();
-            $cus_pwd = $customers->getPassword($username);
-            $cus_id = $customers->getCustomerId($username);
-            // Verify user password and set $_SESSION
-            if ( strcmp( md5($password), $cus_pwd['cus_password'] )===0 ) {
-                $_SESSION['username'] = $username;
-                $_SESSION['loggedin'] = true;
-                $_SESSION['cus_id'] = $cus_id['cus_id'];
-                $this->redirect('accountIndex');
-                //$view = new View('loggedin');
-                //$view->addData('username', $username);
-                //echo $view->render();
+        if(!$_SESSION['loggedin']){
+            if(!empty($_POST)){
+                $username = htmlspecialchars($_POST["username"]);
+                $password = htmlspecialchars($_POST["psw"]); 
+                $customers = new CustomerCollectionModel();
+                $cus_pwd = $customers->getPassword($username);
+                $cus_id = $customers->getCustomerId($username);
+                // Verify user password and set $_SESSION
+                if ( strcmp( md5($password), $cus_pwd['cus_password'] )===0 ) {
+                    $_SESSION['username'] = $username;
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['cus_id'] = $cus_id['cus_id'];
+                    $_SESSION['last_action'] = time();
+                    $this->redirect('accountIndex');
+                    //$view = new View('loggedin');
+                    //$view->addData('username', $username);
+                    //echo $view->render();
 
-            } else{
-                $view = new View('login');
-                $view->addData('login_error', "Username or Password is wrong. Try again.");
+                } else{
+                    $view = new View('login');
+                    $view->addData('login_error', "Username or Password is wrong. Try again.");
+                    echo $view->render();
+                }
+
+            }else{
+            $view = new View('login');
                 echo $view->render();
             }
-
         }else{
-        $view = new View('login');
-            echo $view->render();
+            $this->redirect('accountIndex');
         }
     }
 
@@ -70,10 +76,10 @@ class CustomerController extends Controller
             $customer->setUsername($username);
             $customer->setPassword(md5($password));
             $customer->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
-           $customer->save();
-           $view = new View('user_created');
-           $view->addData('username', $username);
-           echo $view->render();
+            $customer->save();
+            $view = new View('user_created');
+            $view->addData('username', $username);
+            echo $view->render();
         }
         else{
             $view = new View('signup');

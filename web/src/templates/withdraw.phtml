@@ -1,7 +1,5 @@
 <?php include "header.phtml" ?>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,29 +54,35 @@
 <body>
 
 <form action= "<?php $action; ?>" style="max-width:500px;margin:auto" method="POST">
-    <h2>Login</h2>
+    <h3>How much money would you like to withdraw?</h3>
+    <?php echo "<h4>Current Balance is  $balance </h4>"; ?> 
     <div class="input-container">
         <i class="fa fa-user icon"></i>
-        <input class="input-field" type="text" placeholder="Username" name="username">
+        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)">
     </div>
-
-
-    <div class="input-container">
-        <i class="fa fa-key icon"></i>
-        <input class="input-field" type="password" placeholder="Password" name="psw">
-    </div>
-
     <?php 
-    if(strcmp($login_error,"")!==0){
-        echo '<font color="red"><center>'. $login_error.' </center></font><br>';
+    if(strcmp($withdraw_error,"")!==0){
+        echo '<font color="red"><center>'. $withdraw_error.' Try again. </center></font><br>';
+    }
+    if(strcmp($transaction,"")!==0){
+        echo '<font color="blue"><center>'. $transaction.' Thank you for using FBBank. </center></font><br>';
     }
     ?>
-
-    <button type="submit" class="btn">Login</button>
-    <div class="container signin">
-        <p>Do not have an account? <a href=<?= $linkTo('Signup'); ?>>Sign up</a>.</p>
+    <button type="submit" class="btn">Submit</button>
+    <div class="container withdraw">
+        <p>Go back to account page <a href=<?= $linkTo('accountIndex'); ?>>back</a>.</p>
     </div>
 </form>
+<script>
+ function check(input) {
+   if (input.value < 0) {
+     input.setCustomValidity('The number must be greater than zero.');
+   } else {
+     // input is fine -- reset the error message
+     input.setCustomValidity('');
+   }
+ }
+</script>
 
 </body>
 </html>

@@ -95,5 +95,16 @@ $collection->attachRoute(
     )
 );
 
+$collection->attachRoute(
+    new Route(
+        '/account/withdraw/:id',
+        array(
+        '_controller' => 'agilman\a2\controller\TransactionController::withdraw',
+        'methods' => ['GET','POST'],
+        'name' => 'withdraw'
+        )
+    )
+);
+
 $router = new Router($collection);
 $router->setBasePath('/');
