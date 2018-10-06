@@ -58,7 +58,7 @@
     <?php echo "<h4>Current Balance is  $balance </h4>"; ?> 
     <div class="input-container">
         <i class="fa fa-user icon"></i>
-        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)">
+        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)" required>
     </div>
     <?php 
     if(strcmp($withdraw_error,"")!==0){

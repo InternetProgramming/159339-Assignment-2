@@ -20,7 +20,8 @@ class AccountCollectionModel extends Model
     public function __construct($id)
     {
         parent::__construct();
-        if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus = '$id';")) {
+       // if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus ='$id'and `disabled` = 0;")) {
+        if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus ='$id';")) {
             throw new BankExceptions("No result of Account number");
         }
         $this->accountNums = array_column($result->fetch_all(), 0);
@@ -40,5 +41,8 @@ class AccountCollectionModel extends Model
             // load accounts from DB one at a time only when required
             yield (new AccountModel())->load($acc_num);
         }
+    }
+    public function getN(){
+        return $this->N;
     }
 }

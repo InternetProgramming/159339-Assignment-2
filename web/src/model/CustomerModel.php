@@ -1,5 +1,6 @@
 <?php
 namespace agilman\a2\model;
+use agilman\a2\Exceptions\BankExceptions;
 
 
 /**
@@ -115,7 +116,7 @@ class CustomerModel extends Model
     public function getPassword()
     {
 
-        return $this->cus_lname;
+        return $this->cus_password;
     }
 
     public function setPassword(string $password)
@@ -164,7 +165,7 @@ class CustomerModel extends Model
 
         return $this;
     }
-    
+
 
     /**
      * Loads customer information from the database
@@ -172,14 +173,16 @@ class CustomerModel extends Model
      * @param int $id Customer ID
      *
      * @return $this CustomerModel
+     * @throws BankExceptions
      */
     public function load($usrnm)
     {
-        if (!$result = $this->db->query("SELECT * FROM customer WHERE `username` = $usrnm;")) {
+        if (!$result = $this->db->query("SELECT * FROM customer WHERE `cus_username` = '$usrnm';")) {
             // throw new ...
+            throw new BankExceptions("Cannot update information");
         } 
         $result = $result->fetch_assoc();
-        $this->cus_id = $result['cus_username'];
+        $this->cus_id = $result['cus_id'];
         $this->cus_fname = $result['cus_fname'];
         $this->cus_lname = $result['cus_lname'];
         $this->cus_address = $result['cus_address'];
@@ -193,8 +196,8 @@ class CustomerModel extends Model
 
     /**
      * Saves account information to the database
-
      * @return $this AccountModel
+     * @throws BankExceptions
      */
     public function save()
     {
@@ -208,16 +211,18 @@ class CustomerModel extends Model
         $cus_phone = $this->cus_phone;
         $cus_created_at = $this->cus_created_at;
 
-        if (!isset($this->id)) {
+        if (!isset($cus_id)) {
             // New account - Perform INSERT
             if (!$result = $this->db->query("INSERT INTO customer VALUES (NULL,'$cus_fname','$cus_lname', '$cus_address', '$cus_username', '$cus_password', '$cus_dob', '$cus_phone', '$cus_created_at');")) {
                 // throw new ...
+                throw new BankExceptions("An error creating a new account");
             }
             $this->id = $this->db->insert_id;
         } else {
             // saving existing account - perform UPDATE
-            if (!$result = $this->db->query("UPDATE customer SET `name` = '$name' WHERE `id` = $this->id;")) {
+            if (!$result = $this->db->query("UPDATE customer SET `cus_fname` = '$cus_fname', `cus_lname` = '$cus_lname', `cus_address` = '$cus_address' WHERE `cus_id` = '$cus_id';")) {
                 // throw new ...
+                throw new BankExceptions("Could not update account");
             }
             
         }
@@ -234,6 +239,7 @@ class CustomerModel extends Model
     {
         if (!$result = $this->db->query("DELETE FROM `account` WHERE `account`.`id` = $this->id;")) {
             //throw new ...
+            throw new BankExceptions("Cannot delete account");
         }
 
         return $this;

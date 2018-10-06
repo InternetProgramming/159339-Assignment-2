@@ -38,8 +38,8 @@ class Model
         $this->db = new mysqli(
             DB_HOST,
             DB_USER,
-            DB_PASS,
-            DB_NAME
+            DB_PASS
+            //DB_NAME
         );
 
         if (!$this->db) {
@@ -86,7 +86,9 @@ class Model
 
             if (!$result) {
                 // handle appropriately
-                error_log("Failed creating table account", 0);
+               // error_log("Failed creating table account", 0);
+                throw new BankExceptions("Failed creating table account");
+
             }
             $this->db->query("alter table customer auto_increment = 1000000;");
 
@@ -117,6 +119,7 @@ class Model
                     acc_cus int(8) unsigned NOT NULL,
                     acc_balance DECIMAL(13,2),
                     created_at varchar(80),
+                    disabled tinyint(1),
                     PRIMARY KEY (acc_number),
                     FOREIGN KEY fk_cus(acc_cus) REFERENCES customer(cus_id)
                 );"
@@ -128,36 +131,6 @@ class Model
                 // handle appropriately
                 //error_log("Failed creating table account", 0);
                 throw new BankExceptions("Failed creating table account!");
-            }
-
-        }
-
-        //----------------------------------------------------------------------------
-        // Transaction Type Table
-        //----------------------------------------------------------------------------
-
-        $result = $this->db->query("SHOW TABLES LIKE 'trans_type';");
-
-        if ($result->num_rows == 0) {
-            // table doesn't exist
-            // create it and populate with sample data
-
-            $result = $this->db->query(
-                "create table trans_type(
-                    trans_type_id int(8) unsigned NOT NULL auto_increment,
-                    trans_type_nanme varchar(80),
-                    PRIMARY KEY (trans_type_id)
-                );"
-            );
-
-            $this->db->query("insert into trans_type values(null, 'withdraw');");
-            $this->db->query("insert into trans_type values(null, 'deposit');");
-            $this->db->query("insert into trans_type values(null, 'transfer');");
-
-            if (!$result) {
-                // handle appropriately
-               //error_log("Failed creating table account", 0);
-                throw new BankExceptions("Failed creating table Transaction Type!");
             }
 
         }
@@ -176,14 +149,13 @@ class Model
                 "create table transaction(
                     trans_id int(8) unsigned NOT NULL auto_increment,
                     acc_number int(8) unsigned NOT NULL,
-                    `type` int(8) unsigned NOT NULL,
+                    `type` varchar(80) NOT NULL,
                     amount DECIMAL(13,2),
                     balance DECIMAL(13,2),
                     reference varchar(255),
                     created_at varchar(80),
                     PRIMARY KEY (trans_id),
-                    FOREIGN KEY fk_acc(acc_number) REFERENCES account(acc_number),
-                    FOREIGN KEY fk_type(type) REFERENCES trans_type(trans_type_id)
+                    FOREIGN KEY fk_acc(acc_number) REFERENCES account(acc_number)
                 );"
             );
 

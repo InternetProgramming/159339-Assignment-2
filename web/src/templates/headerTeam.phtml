@@ -45,21 +45,20 @@
 <div class="navbar">
     <a class="active" href=<?= $linkTo('Home'); ?>><i class="fas fa-piggy-bank"></i> FNBank</a>
     <div class="topnav-right">
-        <a href="#"><i class="fa fa-fw fa-search"></i> About Us</a>
         <?php 
         session_start();
         if ($_SESSION['loggedin']){ 
+            echo "<a href=" .$linkTo('aboutus')."> <i class='fa fa-fw fa-search'></i> About Us</a>";
             echo "<a href= ".$linkTo('accountIndex')."> <i class='far fa-hand-point-right'></i> Account </a>";
-        }
-        else{
-            echo "<a href= ".$linkTo('Signup')."> <i class='far fa-hand-point-right'></i> Sign-up</a>";
-        }
-         if ($_SESSION['loggedin']){
+            echo "<a href= ".$linkTo('edit')."> <i class='far fa-hand-point-right'></i>".$_SESSION['username']."</a>";
             echo "<a href= ".$linkTo('Logout')."> <i class='far fa-hand-point-right'></i> Logout</a>";
         }
         else{
+            echo "<a href=" .$linkTo('aboutus')."> <i class='fa fa-fw fa-search'></i> About Us</a>";
+            echo "<a href= ".$linkTo('Signup')."> <i class='far fa-hand-point-right'></i> Sign-up</a>";
             echo "<a href= ".$linkTo('Login')."> <i class='far fa-hand-point-right'></i> Login</a>";
         }
+
         ?>
     </div>
 </div>

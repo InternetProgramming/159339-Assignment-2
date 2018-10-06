@@ -38,14 +38,14 @@ include "headerTeam.phtml" ?>
             background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
             color: white;
             font-weight: bold;
-            font-size: 80px;
+            font-size: 60px;
             border: 10px solid #34495E;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            width: 400px;
+            width: 600px;
             padding: 20px;
             text-align: center;
         }
@@ -55,8 +55,11 @@ include "headerTeam.phtml" ?>
 
 
 
-<div class="bg-text">LOGOUT</div>
-
+<div class="bg-text">LOGGED OUT</div>
+<script>
+setTimeout(function () {
+ window.location.href= 'http://localhost:8000';},3000);
+</script>
 </body>
 </html>
 

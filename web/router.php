@@ -19,6 +19,17 @@ $collection->attachRoute(
 
 $collection->attachRoute(
     new Route(
+        '/aboutus',
+        array(
+            '_controller' => 'agilman\a2\controller\HomeController::aboutus',
+            'methods' => 'GET',
+            'name' => 'aboutus'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
         '/login/',
         array(
             '_controller' => 'agilman\a2\controller\CustomerController::Login',
@@ -46,6 +57,17 @@ $collection->attachRoute(
             '_controller' => 'agilman\a2\controller\CustomerController::Logout',
             'methods' => ['GET','POST'],
             'name' => 'Logout'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
+        '/user/',
+        array(
+            '_controller' => 'agilman\a2\controller\CustomerController::edit',
+            'methods' => ['GET','POST'],
+            'name' => 'edit'
         )
     )
 );
@@ -97,11 +119,44 @@ $collection->attachRoute(
 
 $collection->attachRoute(
     new Route(
+        '/account/transaction/:id',
+        array(
+        '_controller' => 'agilman\a2\controller\TransactionController::indexAction',
+        'methods' => ['GET','POST'],
+        'name' => 'transaction'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
         '/account/withdraw/:id',
         array(
         '_controller' => 'agilman\a2\controller\TransactionController::withdraw',
         'methods' => ['GET','POST'],
         'name' => 'withdraw'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
+        '/account/deposit/:id',
+        array(
+        '_controller' => 'agilman\a2\controller\TransactionController::deposit',
+        'methods' => ['GET','POST'],
+        'name' => 'deposit'
+        )
+    )
+);
+
+$collection->attachRoute(
+    new Route(
+        '/account/transfer/:id',
+        array(
+        '_controller' => 'agilman\a2\controller\TransactionController::transfer',
+        'methods' => ['GET','POST'],
+        'name' => 'transfer'
         )
     )
 );

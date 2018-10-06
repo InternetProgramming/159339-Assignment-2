@@ -101,9 +101,10 @@ class AccountModel extends Model
      */
     public function load($acc_num)
     {
-        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num';")) {
+        //if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num' and `disabled` =0")) {
+        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num'")) {
             throw new BankExceptions("No Result");
-        } 
+        }
         $result = $result->fetch_assoc();
         $this->acc_number = $result['acc_number'];
         $this->acc_cus = $result['acc_cus'];
@@ -124,7 +125,8 @@ class AccountModel extends Model
         $created_at = $this->created_at;
         if (!isset($this->acc_number)) {
             // New account - Perform INSERT
-            if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at');")) {
+           // if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at', 0);")) {
+            if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at', 0);")) {
                 throw new BankExceptions("No account for insertion data");
             }
             $this->acc_number = $this->db->insert_id;
@@ -149,7 +151,7 @@ class AccountModel extends Model
         // put if
         // to check whether account balance is zero or not.
         // maybe using pop-up : echo "<script type='text/javascript'>alert(not zero);</script>";
-        if (!$result = $this->db->query("DELETE FROM `account` WHERE `acc_number` = '$this->acc_number';")) {
+        if (!$result = $this->db->query("UPDATE `account` SET `disabled` = 1 WHERE `acc_number` = '$this->acc_number';")) {
             throw new BankExceptions("Could not Delete ");
         }
 

@@ -166,7 +166,7 @@ class TransactionModel extends Model{
 
         if (!isset($this->trans_id)) {
             // New account - Perform INSERT
-            if (!$result = $this->db->query("INSERT INTO `transaction` VALUES (NULL,'$acc_number','$trans_type', '$amount', '$balance', '$referecen', '$created_at');")) {
+            if (!$result = $this->db->query("INSERT INTO `transaction` VALUES (NULL,'$acc_number','$trans_type', '$amount', '$balance', '$reference', '$created_at');")) {
                 // throw new ...
             }
             $this->acc_number = $this->db->insert_id;

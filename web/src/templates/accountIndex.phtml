@@ -1,31 +1,111 @@
 <?php include "headerTeam.phtml" ?>
 
 <!---------- Body starts --------------->
+    <html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        tr {
+            background-color: rgb(165, 182, 229);
+            display: block;
+            font-size: 20px;
+            margin-bottom: 9px;
+            -moz-box-shadow: 0px 2px 2px black;
+            -webkit-box-shadow: 0px 2px 2px black;
+            box-shadow: 0px 2px 2px black;
+        }
+
+        td{
+            padding: 5px;
+            text-align: left;
+        }
+
+
+
+        .button {
+            background-color: #E74C3C; /* Green */
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .btn {
+            background-color: #5499C7;
+            border: none;
+            color: black;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 15px;
+            margin: 4px 2px;
+            transition: 0.3s;
+        }
+
+        .btn1 {
+            background-color: #AAB7B8;
+            border: none;
+            color: black;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 15px;
+            margin: 4px 2px;
+            transition: 0.3s;
+        }
+
+
+
+        .button1 {border-radius: 10px;}
+
+        .btn:hover {
+            background-color: #34495E;
+            color: white;
+        }
+
+        .btn1:hover {
+            background-color: #34495E;
+            color: white;
+        }
+
+
+
+    </style>
+</head>
+<body>
 
 <table>
     <?php 
-    if(empty($accounts)){
+    if($count==0){
         echo "<h2> Don't have Any Accounts </h2>";  
     }else{
         echo "<h2> The accounts are:</h2>";
         echo " <tr>";
-        echo "<td> Account Number </td>";
-        echo "<td>     Balance    </td></tr>";
+        echo "<tr> Account No</tr>";
+        echo "<tr> Balance</tr>";
         foreach ($accounts as $account) { 
             echo "
         <td><center>". $account->getAccountNum() . "</center></td>
-        <td><center>". $account->getBalance() ."</center></td>
-        <td> <a href=" .$linkTo('withdraw', ['id' => $account->getAccountNum()]) . " > Withdraw </a></td>
-        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Deposit </a></td>
-        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Transfer </a></td>
-        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > Close </a></td>
+        <td><center>$". $account->getBalance() ."</center></td>
+        <td> <a href=" .$linkTo('transaction', ['id' => $account->getAccountNum()]) . " > <button class='btn button1'>View</button> </a></td>
+        <td> <a href=" .$linkTo('withdraw', ['id' => $account->getAccountNum()]) . " > <button class='btn1 button1'>Withdraw</button>  </a></td>
+        <td> <a href=" .$linkTo('deposit', ['id' => $account->getAccountNum()]) . " > <button class='btn1 button1'>Deposit</button></a></td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " ><button class='btn1 button1'>Transfer</button></a></td>
+        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > <button class='button button1'><i class=\"far fa-trash-alt\"></i> Close</button> </a></td>
     </tr> ";
         }
     }
     ?>
 </table>
 
+</body>
 <a href=<?= $linkTo('accountCreate'); ?>>Create new account.</a>
 <br>
 <!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>
+
+

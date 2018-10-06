@@ -5,15 +5,64 @@ use agilman\a2\view\View;
 
 
 /**
- * Class HomeController
+ * Class TransactionController
  *
  * @package agilman/a2
  * @author  Andrew Gilman <a.gilman@massey.ac.nz>
  */
 class TransactionController extends Controller
 {
-    /**
+
+        /**
      * Account Index action
+     */
+    public function indexAction($acc_num)
+    {
+        session_start();
+ 
+        //Expire the session if user is inactive for 30
+        //minutes or more.
+        $expireAfter = 5;
+        
+        //Check to see if our "last action" session
+        //variable has been set.
+        if(isset($_SESSION['last_action'])){
+            
+            //Figure out how many seconds have passed
+            //since the user was last active.
+            $secondsInactive = time() - $_SESSION['last_action'];
+            
+            //Convert our minutes into seconds.
+            $expireAfterSeconds = $expireAfter * 60;
+            
+            //Check to see if they have been inactive for too long.
+            if($secondsInactive >= $expireAfterSeconds){
+                //User has been inactive for too long.
+                //Kill their session.
+                session_unset();
+                session_destroy();
+                $this->redirect('Home');
+            }
+            
+        }
+        //Assign the current timestamp as the user's
+        //latest activity
+        $_SESSION['last_action'] = time();
+        if($_SESSION['loggedin']){
+            $collection = new TransactionCollectionModel($acc_num);
+            $transctions = $collection->getTransactions();
+            $view = new View('transactionView');
+            $view->addData('count', $collection->getN());
+            $view->addData('transctions', $transctions);
+            echo $view->render();
+        }
+        else{
+            $this->redirect('Home');
+        }
+
+    }
+    /**
+     * Transaction Withdraw Action
      */
 
 
@@ -23,7 +72,7 @@ class TransactionController extends Controller
  
         //Expire the session if user is inactive for 30
         //minutes or more.
-        $expireAfter = 1;
+        $expireAfter = 5;
         
         //Check to see if our "last action" session
         //variable has been set.
@@ -69,8 +118,8 @@ class TransactionController extends Controller
                 } else{
                     $transaction = new TransactionModel();
                     $transaction->setAccountNum($acc_num);
-                    $transaction->setTransType(1);
-                    $transaction->setAmount($amount);
+                    $transaction->setTransType("Withdraw");
+                    $transaction->setAmount($amount*-1);
                     $transaction->setBalance($account->getBalance()-$amount);
                     $transaction->setReference("");
                     $transaction->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
@@ -89,45 +138,143 @@ class TransactionController extends Controller
         }
     }
 
-    public function Signup()
+    /**
+     * Transaction deposit Action
+     */
+
+
+    public function deposit($acc_num)
     {
-        $username = htmlspecialchars($_POST["username"]);        
-        $password = htmlspecialchars($_POST["psw"]);
-        $confirmed_pw = htmlspecialchars($_POST["cfmpsw"]);
-        $fname = htmlspecialchars($_POST["fname"]);
-        $lname = htmlspecialchars($_POST["lname"]);
-        $address = htmlspecialchars($_POST["address"]);
-        if (strcmp($password, $confirmed_pw)!==0){
-            $view = new View('signup');
-            $view->addData('error', "Password does not match the confirmed Password.");
-            echo $view->render();
-        }
-        //else if(strcmp($username,'')!==0){
-        else if(isset($_POST['username'])){
-            $customer = new TransactionModel();
-            $customer->setFirstName($fname);
-            $customer->setLastName($lname);
-            $customer->setAddress($address);
-            $customer->setUsername($username);
-            $customer->setPassword(md5($password));
-            $customer->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
-           $customer->save();
-           $view = new View('user_created');
-           $view->addData('username', $username);
-           echo $view->render();
-        }
-        else{
-            $view = new View('signup');
-            echo $view->render();
-        }
+        session_start();
+ 
+        //Expire the session if user is inactive for 30
+        //minutes or more.
+        $expireAfter = 5;
         
+        //Check to see if our "last action" session
+        //variable has been set.
+        if(isset($_SESSION['last_action'])){
+            
+            //Figure out how many seconds have passed
+            //since the user was last active.
+            $secondsInactive = time() - $_SESSION['last_action'];
+            
+            //Convert our minutes into seconds.
+            $expireAfterSeconds = $expireAfter * 60;
+            
+            //Check to see if they have been inactive for too long.
+            if($secondsInactive >= $expireAfterSeconds){
+                //User has been inactive for too long.
+                //Kill their session.
+                session_unset();
+                session_destroy();
+                $this->redirect('Home');
+            }
+            
+        }
+        //Assign the current timestamp as the user's
+        //latest activity
+        $_SESSION['last_action'] = time();
+
+        // check logged in or not
+        if($_SESSION['loggedin']){
+            $account = new AccountModel();
+            $account = $account->load($acc_num);
+            if(empty($_POST)){
+                $view = new View('withdraw');
+                $view->addData('balance', $account->getBalance());
+                 echo $view->render();
+            }else{
+                $amount = htmlspecialchars($_POST["amount"]);
+                $transaction = new TransactionModel();
+                $transaction->setAccountNum($acc_num);
+                $transaction->setTransType("Deposit");
+                $transaction->setAmount($amount);
+                $transaction->setBalance($account->getBalance()+$amount);
+                $transaction->setReference("");
+                $transaction->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
+                $transaction->save();
+                $account->setBalance($transaction->getBalance());
+                $account->save();
+                $view = new View('withdraw');
+                $view->addData('balance', $account->getBalance());
+                $view->addData('transaction', "$". $amount. " Successfully Deposited");
+                echo $view->render();
+            }
+            
+        // not logged in
+        }else{
+            $this->redirect('Home');
+        }
     }
 
-    public function logout(){
+
+
+    public function transfer($acc_num)
+    {
         session_start();
-        session_destroy();
-        $view = new View('logout');
-        echo $view->render();
+ 
+        //Expire the session if user is inactive for 30
+        //minutes or more.
+        $expireAfter = 5;
+        
+        //Check to see if our "last action" session
+        //variable has been set.
+        if(isset($_SESSION['last_action'])){
+            
+            //Figure out how many seconds have passed
+            //since the user was last active.
+            $secondsInactive = time() - $_SESSION['last_action'];
+            
+            //Convert our minutes into seconds.
+            $expireAfterSeconds = $expireAfter * 60;
+            
+            //Check to see if they have been inactive for too long.
+            if($secondsInactive >= $expireAfterSeconds){
+                //User has been inactive for too long.
+                //Kill their session.
+                session_unset();
+                session_destroy();
+                $this->redirect('Home');
+            }
+            
+        }
+        //Assign the current timestamp as the user's
+        //latest activity
+        $_SESSION['last_action'] = time();
+
+        // check logged in or not
+        if($_SESSION['loggedin']){
+            $account = new AccountModel();
+            $account = $account->load($acc_num);
+            if(empty($_POST)){
+                $view = new View('withdraw');
+                $view->addData('balance', $account->getBalance());
+                 echo $view->render();
+            }else{
+                $amount = htmlspecialchars($_POST["amount"]);
+                $transaction = new TransactionModel();
+                $transaction->setAccountNum($acc_num);
+                $transaction->setTransType("Deposit");
+                $transaction->setAmount($amount);
+                $transaction->setBalance($account->getBalance()+$amount);
+                $transaction->setReference("");
+                $transaction->setCreatedAt((new \DateTime())->format('Y-m-d H:i:s'));
+                $transaction->save();
+                $account->setBalance($transaction->getBalance());
+                $account->save();
+                $view = new View('withdraw');
+                $view->addData('balance', $account->getBalance());
+                $view->addData('transaction', "$". $amount. " Successfully Deposited");
+                echo $view->render();
+            }
+            
+        // not logged in
+        }else{
+            $this->redirect('Home');
+        }
     }
+
+
     
 }

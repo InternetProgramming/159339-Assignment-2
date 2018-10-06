@@ -1,0 +1,34 @@
+<?php include "headerTeam.phtml" ?>
+
+<!---------- Body starts --------------->
+<h1>Welcome, <?=$cus_fname?> </h1>
+<table>
+    <?php 
+    if($count==1){
+        echo "<h2> Don't have Any transactions </h2>";  
+    }else{
+        echo "<h2> The transctions are:</h2>";
+        echo " <tr>";
+        echo "<td><center> Account Number </center></td>";
+        echo "<td><center> Transaction Type </center></td>";
+        echo "<td><center> Amount </center></td>";
+        echo "<td><center> Balance </center></td>";
+        echo "<td><center> Reference </center></td>";
+        echo "<td><center> Created at</center></td></tr>";
+        foreach ($transctions as $trans) { 
+            echo "
+            <td><center>". $trans->getAccountNum() . "</center></td>
+            <td><center>". $trans->getTransType() . "</center></td>
+            <td><center>". $trans->getAmount() . "</center></td>
+            <td><center>". $trans->getBalance() ."</center></td>
+            <td><center>". $trans->getReference() ."</center></td>
+            <td><center>". $trans->getCreatedAt() ."</center></td></tr> ";
+        }
+    }
+    ?>
+</table>
+
+<a href=<?= $linkTo('accountIndex'); ?>>Back to account</a>
+<br>
+<!---------- Body ends -------------------->
+<?php include "footer.phtml" ?>

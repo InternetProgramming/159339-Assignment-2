@@ -55,7 +55,12 @@ include "headerTeam.phtml" ?>
 
 
 <?php 
-echo '<div class="bg-text"> Congratulations. Username '. $username .' Created </div>';
+if($editted){
+    echo '<div class="bg-text"> Username '. $username .' Edited </div>';
+}else{
+    echo '<div class="bg-text"> Congratulations. Username '. $username .' Created </div>';
+}
+
 ?> 
 </body>
 </html>

@@ -1,7 +1,24 @@
-<?php include "header.phtml" ?>
+<?php include "headerTeam.phtml" ?>
 <!---------- Body starts --------------->
-Account <?= $accountId ?> deleted successfully. <br>
-<a href=<?= $linkTo('accountIndex'); ?>>Back</a>
+<?php
+echo "<br><br>";
+if($deleted){
+  echo"<h2><center> Your account " . $acc_num. " has been closed. </h2>";
+
+}else{
+    echo '<font color="red"><center>'. $acc_num."'s balance is $".$balance. ".</center></font><br>";
+    echo "<p><center> To close an account, its balance must be zero. </center></p>";
+}
+echo " <p><center>Go back to account page <a href=" .$linkTo('accountIndex'). ">back</a>.</center></p>";
+echo"
+<script>
+setTimeout(function () {
+ window.location.href= 'http://localhost:8000/account';},5000);
+</script>
+";
+?>
+
 <br>
+
     <!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>
