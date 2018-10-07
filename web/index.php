@@ -8,10 +8,13 @@
  *
  * FRONT CONTROLLER - Responsible for URL routing and User Authentication
  *
- * @package agilman/a2
+ * @package team/a2
  * @author  A. Gilman <a.gilman@massey.ac.nz>
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  **/
-namespace agilman\a2;
+namespace team\a2;
 date_default_timezone_set('Pacific/Auckland');
 const APP_ROOT = __DIR__;
 

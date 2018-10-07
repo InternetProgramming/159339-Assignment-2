@@ -1,49 +1,76 @@
 <?php
-namespace agilman\a2\model;
-use agilman\a2\Exceptions\BankExceptions;
-
+namespace team\a2\model;
+use team\a2\Exceptions\BankExceptions;
 
 /**
- * Class AccountModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * Class CustomerModel
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class CustomerModel extends Model
 {
     /**
-     * @var integer Account ID
+     * @var integer Customer ID
      */
     private $cus_id;
     /**
-     * @var string Account Name
+     * @var string Customer First name
      */
     private $cus_fname;
 
+    /**
+     * @var string Customer Last name
+     */
     private $cus_lname;
 
+    /**
+     * @var string Customer Address
+     */
     private $cus_address;
 
+    /**
+     * @var string Customer Username
+     */
     private $cus_username;
 
+    /**
+     * @var string Customer Password
+     */
     private $cus_password;
 
+    /**
+     * @var string Customer Date of Birth
+     */
     private $cus_dob;
 
+    /**
+     * @var string Customer Phone Number
+     */
     private $cus_phone;
 
+    /**
+     * @var string Customer information creation Date and time
+     */
     private $cus_created_at;
 
     
 
 
     /**
-     * @return int Account ID
+     * @return int Customer ID
      */
     public function getId()
     {
         return $this->cus_id;
     }
+
+    /**
+     * @param  int $id
+     *
+     * @return $this CustomerModel
+     */
 
     public function setId(int $id)
     {
@@ -62,9 +89,9 @@ class CustomerModel extends Model
     }
 
     /**
-     * @param string $name Account name
+     * @param   string $name Account name
      *
-     * @return $this AccountModel
+     * @return  $this AccountModel
      */
     public function setFirstName(string $fname)
     {
@@ -74,12 +101,19 @@ class CustomerModel extends Model
     }
 
 
+    /**
+     * @return string customer Last Name
+     */
     public function getLastName()
     {
 
         return $this->cus_lname;
     }
 
+    /**
+     * @param   string $lname customer Last Name
+     * @return  $this CustomerModel
+     */
     public function setLastName(string $lname)
     {
         $this->cus_lname = $lname;
@@ -87,12 +121,20 @@ class CustomerModel extends Model
         return $this;
     }
 
+    /**
+     * @return string Customer Address
+     */
     public function getAddress()
     {
 
         return $this->cus_address;
     }
 
+
+    /**
+     * @param   string $address customer Address
+     * @return  $this CustomerModel
+     */
     public function setAddress(string $address)
     {
         $this->cus_address = $address;
@@ -100,12 +142,19 @@ class CustomerModel extends Model
         return $this;
     }
 
+    /**
+     * @return string Customer Username
+     */
     public function getUserName()
     {
 
         return $this->cus_username;
     }
 
+    /**
+     * @param   string $username customer Username
+     * @return  $this CustomerModel
+     */
     public function setUserName(string $username)
     {
         $this->cus_username = $username;
@@ -113,12 +162,19 @@ class CustomerModel extends Model
         return $this;
     }
 
+    /**
+     * @return string customer Password
+     */
     public function getPassword()
     {
 
         return $this->cus_password;
     }
 
+    /**
+     * @param   string $password customer Password
+     * @return  $this CustomerModel
+     */
     public function setPassword(string $password)
     {
         $this->cus_password = $password;
@@ -126,13 +182,19 @@ class CustomerModel extends Model
         return $this;
     }
 
-
+    /**
+     * @return  string customer Date of Birth
+     */
     public function getdob()
     {
 
         return $this->cus_lname;
     }
 
+    /**
+     * @param   string $dob customer Date of Birth
+     * @return  $this CustomerModel
+     */
     public function setdob(string $dob)
     {
         $this->cus_dob = $dob;
@@ -140,12 +202,19 @@ class CustomerModel extends Model
         return $this;
     }
 
+    /**
+     * @return string customer Phone number
+     */
     public function getPhone()
     {
 
         return $this->cus_lname;
     }
 
+    /**
+     * @param   string $phone customer phone number
+     * @return  $this CustomerModel
+     */
     public function setPhone(string $phone)
     {
         $this->cus_phone = $phone;
@@ -153,12 +222,19 @@ class CustomerModel extends Model
         return $this;
     }
 
+    /**
+     * @return  string User information creation Date and time
+     */
     public function getCreatedAt()
     {
 
         return $this->cus_created_at;
     }
 
+    /**
+     * @param   string $created_at User information creation Date and time
+     * @return  $this CustomerModel
+     */
     public function setCreatedAt(string $created_at)
     {
         $this->cus_created_at = $created_at;
@@ -168,18 +244,17 @@ class CustomerModel extends Model
 
 
     /**
-     * Loads customer information from the database
      *
-     * @param int $id Customer ID
+     * Loads customer information to Database
      *
-     * @return $this CustomerModel
-     * @throws BankExceptions
+     * @param   string $usrnm Customer Username
+     * @return  $this CustomerModel
+     *
      */
     public function load($usrnm)
     {
         if (!$result = $this->db->query("SELECT * FROM customer WHERE `cus_username` = '$usrnm';")) {
             // throw new ...
-            throw new BankExceptions("Cannot update information");
         } 
         $result = $result->fetch_assoc();
         $this->cus_id = $result['cus_id'];
@@ -196,8 +271,9 @@ class CustomerModel extends Model
 
     /**
      * Saves account information to the database
-     * @return $this AccountModel
-     * @throws BankExceptions
+     * If customer already exist then update customer information.
+     *
+     * @return $this CustomerModel
      */
     public function save()
     {
@@ -215,14 +291,12 @@ class CustomerModel extends Model
             // New account - Perform INSERT
             if (!$result = $this->db->query("INSERT INTO customer VALUES (NULL,'$cus_fname','$cus_lname', '$cus_address', '$cus_username', '$cus_password', '$cus_dob', '$cus_phone', '$cus_created_at');")) {
                 // throw new ...
-                throw new BankExceptions("An error creating a new account");
             }
             $this->id = $this->db->insert_id;
         } else {
             // saving existing account - perform UPDATE
             if (!$result = $this->db->query("UPDATE customer SET `cus_fname` = '$cus_fname', `cus_lname` = '$cus_lname', `cus_address` = '$cus_address' WHERE `cus_id` = '$cus_id';")) {
                 // throw new ...
-                throw new BankExceptions("Could not update account");
             }
             
         }
@@ -232,21 +306,16 @@ class CustomerModel extends Model
 
     /**
      * Deletes account from the database
-
-     * @return $this AccountModel
+     *
+     * @return $this CustomerModel
      */
     public function delete()
     {
         if (!$result = $this->db->query("DELETE FROM `account` WHERE `account`.`id` = $this->id;")) {
             //throw new ...
-            throw new BankExceptions("Cannot delete account");
         }
 
         return $this;
     }
 
-    public function __construct(){
-        parent::__construct();
-        $this->$tableName = "account";
-    }
 }

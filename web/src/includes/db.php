@@ -5,8 +5,15 @@
  * Date: 6/10/18
  * Time: 1:20 PM
  */
-
-namespace agilman\a2\includes;
+/**
+ * Class CustomerController
+ *
+ * @package team\a2\controller
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
+ */
+namespace team\a2\includes;
 
 
 

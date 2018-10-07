@@ -1,13 +1,14 @@
 <?php
-namespace agilman\a2\model;
+namespace team\a2\model;
 
-use agilman\a2\Exceptions\BankExceptions;
+use team\a2\Exceptions\BankExceptions;
 
 /**
- * Class AccountCollectionModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * Class CustomerCollectionModel
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class CustomerCollectionModel extends Model
 {
@@ -28,7 +29,8 @@ class CustomerCollectionModel extends Model
     /**
      * Get account collection
      *
-     * @return \Generator|AccountModel[] Accounts
+     * @param $usrnm customer username
+     * @return array
      * @throws BankExceptions
      */
     public function getPassword($usrnm)
@@ -41,6 +43,13 @@ class CustomerCollectionModel extends Model
         return $result->fetch_assoc();  
     }
 
+    /**
+     *
+     *
+     * @param $usrnm
+     * @return array
+     * @throws BankExceptions
+     */
     public function getCustomerId($usrnm)
     {
         if (!$result = $this->db->query("SELECT cus_id FROM customer where cus_username = '$usrnm';")) {

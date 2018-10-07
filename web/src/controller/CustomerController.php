@@ -1,22 +1,23 @@
 <?php
-namespace agilman\a2\controller;
-use agilman\a2\model\{CustomerModel,CustomerCollectionModel};
-use agilman\a2\view\View;
+namespace team\a2\controller;
+use team\a2\model\{CustomerModel,CustomerCollectionModel};
+use team\a2\view\View;
 
 
 /**
- * Class HomeController
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * Class CustomerController
+ * @package team\a2\controller
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class CustomerController extends Controller
 {
     /**
-     * Account Index action
+     * Function Login; Action work when customer login
+     *
+     * @throws \team\a2\Exceptions\BankExceptions
      */
-
-
     public function Login()
     {
         //Start our session.
@@ -50,6 +51,11 @@ class CustomerController extends Controller
         }
     }
 
+    /**
+     * Signup function; Action works when user signup
+     *
+     * @throws \team\a2\Exceptions\BankExceptions
+     */
     public function Signup()
     {
         $username = htmlspecialchars($_POST["username"]);        
@@ -60,7 +66,22 @@ class CustomerController extends Controller
         $address = htmlspecialchars($_POST["address"]);
         if (strcmp($password, $confirmed_pw)!==0){
             $view = new View('signup');
-            $view->addData('error', "Password does not match the confirmed Password.");
+            $view->addData('error', "Password does not match the confirmed Password. ");
+            echo $view->render();
+        }
+        else if(isset($_POST['username'])&&(strlen($username)<6)){
+            $view = new View('signup');
+            $view->addData('error', "Username must be longer than 5 letters. ");
+            echo $view->render();
+        }
+        else if(isset($_POST['username'])&&(strlen($password)<6)){
+            $view = new View('signup');
+            $view->addData('error', "Password must be longer than 5 letters. ");
+            echo $view->render();
+        }
+        else if(isset($_POST['username'])&&(strcmp($password, $username)===0)){
+            $view = new View('signup');
+            $view->addData('error', "Username cannot be Password. ");
             echo $view->render();
         }
         //else if(strcmp($username,'')!==0){
@@ -84,6 +105,7 @@ class CustomerController extends Controller
         
     }
 
+
     public function logout(){
         session_start();
         session_unset();
@@ -92,6 +114,11 @@ class CustomerController extends Controller
         echo $view->render();
     }
 
+    /**
+     *
+     * @param $username
+     * @throws \team\a2\Exceptions\BankExceptions
+     */
     public function edit(){
         session_start();
  

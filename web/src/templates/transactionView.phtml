@@ -1,13 +1,91 @@
 <?php include "headerTeam.phtml" ?>
 
 <!---------- Body starts --------------->
-<h1>Welcome, <?=$cus_fname?> </h1>
+
+<html>
 <table>
+<style>
+    table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    }
+
+    th, td {
+    text-align: left;
+    padding: 16px;
+    }
+
+    tr:nth-child(even) {
+    background-color: #f2f2f2
+    }
+
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+</style>
+
+
+
+
     <?php 
-    if($count==1){
+    if($count==0){
         echo "<h2> Don't have Any transactions </h2>";  
     }else{
         echo "<h2> The transctions are:</h2>";
+
+
+        echo "Filter by Transaction Type (by default show all transaction types) :<br>";
+        echo "<form action= '$action' method='GET'>";
+        echo "<select name='trans_type'>";
+        echo '<option value="all">All<br></option>';
+        echo '<option value="Withdraw">Withdraw<br></option>';
+        echo '<option value="Deposit">Deposit<br></option>';
+        echo '<option value="Transfer">Transfer<br></option>';
+        echo '</select>';
+        echo '<input type="submit" > </input>';
+        echo "</form>";
+
+        echo "<br><br>Sort by Date: <br><form action= '$action' method='POST'>";
+        echo "<select name ='orderby'>";
+        echo '<option value="desc">Newest to Oldest<br></option>';
+        echo '<option value="asc">Oldest to newest<br></option>';
+        echo '</select>';
+        echo '<input type="submit" > </input>';
+        echo "</form>";
         echo " <tr>";
         echo "<td><center> Account Number </center></td>";
         echo "<td><center> Transaction Type </center></td>";
@@ -15,18 +93,51 @@
         echo "<td><center> Balance </center></td>";
         echo "<td><center> Reference </center></td>";
         echo "<td><center> Created at</center></td></tr>";
+        function date_compare($a, $b)
+        {
+            $t1 = strtotime($a['datetime']);
+            $t2 = strtotime($b['datetime']);
+            return $t1 - $t2;
+        }    
+        //usort($transctions, 'date_compare');
         foreach ($transctions as $trans) { 
-            echo "
-            <td><center>". $trans->getAccountNum() . "</center></td>
-            <td><center>". $trans->getTransType() . "</center></td>
-            <td><center>". $trans->getAmount() . "</center></td>
-            <td><center>". $trans->getBalance() ."</center></td>
-            <td><center>". $trans->getReference() ."</center></td>
-            <td><center>". $trans->getCreatedAt() ."</center></td></tr> ";
+            if(isset($filter)){
+                if(strcmp($filter, "all")===0){
+                    echo "
+                    <td><center>". $trans->getAccountNum() . "</center></td>
+                    <td><center>". $trans->getTransType() . "</center></td>
+                    <td><center>". $trans->getAmount() . "</center></td>
+                    <td><center>". $trans->getBalance() ."</center></td>
+                    <td><center>". $trans->getReference() ."</center></td>
+                    <td><center>". $trans->getCreatedAt() ."</center></td></tr> ";
+                }else{
+                    if(strcmp($filter, $trans->getTransType())===0){
+                        echo "
+                        <td><center>". $trans->getAccountNum() . "</center></td>
+                        <td><center>". $trans->getTransType() . "</center></td>
+                        <td><center>". $trans->getAmount() . "</center></td>
+                        <td><center>". $trans->getBalance() ."</center></td>
+                        <td><center>". $trans->getReference() ."</center></td>
+                        <td><center>". $trans->getCreatedAt() ."</center></td></tr> ";
+                    }
+                }
+
+            }else{
+                echo "
+                <td><center>". $trans->getAccountNum() . "</center></td>
+                <td><center>". $trans->getTransType() . "</center></td>
+                <td><center>". $trans->getAmount() . "</center></td>
+                <td><center>". $trans->getBalance() ."</center></td>
+                <td><center>". $trans->getReference() ."</center></td>
+                <td><center>". $trans->getCreatedAt() ."</center></td></tr> ";
+            }
+
         }
     }
     ?>
 </table>
+
+</html>
 
 <a href=<?= $linkTo('accountIndex'); ?>>Back to account</a>
 <br>

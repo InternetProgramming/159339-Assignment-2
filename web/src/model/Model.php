@@ -1,19 +1,19 @@
 <?php
 
-namespace agilman\a2\model;
+namespace team\a2\model;
 
-/**
- * Class Model
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
- */
-use agilman\a2\Exceptions\BankExceptions;
+use team\a2\Exceptions\BankExceptions;
 use mysqli;
 require_once 'db_cred.php';
 
 
-
+/**
+ * Class Model
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
+ */
 class Model
 {
 
@@ -86,9 +86,7 @@ class Model
 
             if (!$result) {
                 // handle appropriately
-               // error_log("Failed creating table account", 0);
-                throw new BankExceptions("Failed creating table account");
-
+                error_log("Failed creating table account", 0);
             }
             $this->db->query("alter table customer auto_increment = 1000000;");
 
@@ -149,7 +147,7 @@ class Model
                 "create table transaction(
                     trans_id int(8) unsigned NOT NULL auto_increment,
                     acc_number int(8) unsigned NOT NULL,
-                    `type` varchar(80) NOT NULL,
+                    `trans_type` varchar(80) NOT NULL,
                     amount DECIMAL(13,2),
                     balance DECIMAL(13,2),
                     reference varchar(255),

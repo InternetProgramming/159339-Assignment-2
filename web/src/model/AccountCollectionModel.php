@@ -1,13 +1,14 @@
 <?php
-namespace agilman\a2\model;
+namespace team\a2\model;
 
-use agilman\a2\Exceptions\BankExceptions;
+use team\a2\Exceptions\BankExceptions;
 
 /**
  * Class AccountCollectionModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class AccountCollectionModel extends Model
 {
@@ -15,24 +16,29 @@ class AccountCollectionModel extends Model
 
     private $N;
 
-    private $cus_id;
-
-    public function __construct($id)
+    public function __construct($id=null)
     {
         parent::__construct();
-       // if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus ='$id'and `disabled` = 0;")) {
-        if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus ='$id';")) {
-            throw new BankExceptions("No result of Account number");
+        if($id!==null){
+            if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where acc_cus = '$id' and `disabled` = 0;")) {
+                throw new BankExceptions("No result of Account number");
+            }
+        } 
+        else{
+            if (!$result = $this->db->query("SELECT `acc_number` FROM `account` where `disabled` = 0;")) {
+                throw new BankExceptions("No result of Account number");
+            }
         }
         $this->accountNums = array_column($result->fetch_all(), 0);
         $this->N = $result->num_rows;
-        $this->cus_id = $id;
+        
     }
 
     /**
      * Get account collection
      *
      * @return \Generator|AccountModel[] Accounts
+     * @throws BankExceptions
      */
     public function getAccounts()
     {
@@ -44,5 +50,10 @@ class AccountCollectionModel extends Model
     }
     public function getN(){
         return $this->N;
+    }
+
+    public function getAccountNums()
+    {
+        return $this->accountNums;
     }
 }

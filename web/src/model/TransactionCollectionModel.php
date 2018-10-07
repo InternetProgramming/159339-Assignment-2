@@ -1,15 +1,16 @@
 <?php
 
-namespace agilman\a2\model;
+namespace team\a2\model;
 
-use agilman\a2\Exceptions\BankExceptions;
+use team\a2\Exceptions\BankExceptions;
 
 
 /**
  * Class TransactionCollectionModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class TransactionCollectionModel extends Model
 {
@@ -17,10 +18,10 @@ class TransactionCollectionModel extends Model
 
     private $N;
 
-    public function __construct($acc_num)
+    public function __construct($acc_num, $orderby='asc')
     {
         parent::__construct();
-        if (!$result = $this->db->query("SELECT `trans_id` FROM `transaction` where acc_number = '$acc_num';")) {
+        if (!$result = $this->db->query("SELECT `trans_id` FROM `transaction` where acc_number = '$acc_num' order by created_at $orderby;")) {
             throw new BankExceptions("No results of account number");
         }
         $this->trans_ids = array_column($result->fetch_all(), 0);

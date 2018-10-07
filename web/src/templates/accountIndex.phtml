@@ -1,7 +1,7 @@
 <?php include "headerTeam.phtml" ?>
 
 <!---------- Body starts --------------->
-    <html>
+<html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,22 +79,22 @@
 <body>
 
 <table>
-    <?php 
+    <?php
     if($count==0){
-        echo "<h2> Don't have Any Accounts </h2>";  
+        echo "<h2> Don't have Any Accounts </h2>";
     }else{
         echo "<h2> The accounts are:</h2>";
         echo " <tr>";
         echo "<tr> Account No</tr>";
         echo "<tr> Balance</tr>";
-        foreach ($accounts as $account) { 
+        foreach ($accounts as $account) {
             echo "
         <td><center>". $account->getAccountNum() . "</center></td>
         <td><center>$". $account->getBalance() ."</center></td>
         <td> <a href=" .$linkTo('transaction', ['id' => $account->getAccountNum()]) . " > <button class='btn button1'>View</button> </a></td>
         <td> <a href=" .$linkTo('withdraw', ['id' => $account->getAccountNum()]) . " > <button class='btn1 button1'>Withdraw</button>  </a></td>
         <td> <a href=" .$linkTo('deposit', ['id' => $account->getAccountNum()]) . " > <button class='btn1 button1'>Deposit</button></a></td>
-        <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " ><button class='btn1 button1'>Transfer</button></a></td>
+        <td> <a href=" .$linkTo('transfer', ['id' => $account->getAccountNum()]) . " ><button class='btn1 button1'>Transfer</button></a></td>
         <td> <a href=" .$linkTo('accountDelete', ['id' => $account->getAccountNum()]) . " > <button class='button button1'><i class=\"far fa-trash-alt\"></i> Close</button> </a></td>
     </tr> ";
         }
@@ -107,5 +107,4 @@
 <br>
 <!---------- Body ends -------------------->
 <?php include "footer.phtml" ?>
-
 

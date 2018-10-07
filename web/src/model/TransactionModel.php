@@ -1,74 +1,115 @@
 <?php
-namespace agilman\a2\model;
+namespace team\a2\model;
 
-use agilman\a2\Exceptions\BankExceptions;
-
+use team\a2\Exceptions\BankExceptions;
 
 /**
  * Class TransactionModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class TransactionModel extends Model{
-
+//TODO: Peter Please check balance information!!
+    /**
+     * @var int Transaction ID
+     */
     private $trans_id;
 
+    /**
+     * @var string Account number
+     */
     private $acc_number;
 
+    /**
+     * @var string Transaction Type
+     */
     private $trans_type;
-
+    /**
+     * @var string Transaction amount
+     */
     private $amount;
-
+    /**
+     * @var string Account balance
+     */
     private $balance;
-
+    /**
+     * @var string
+     */
     private $reference;
-
+    /**
+     * @var string Transaction creation Date and time
+     */
     private $created_at;
 
+    /**
+     * @return mixed
+     */
     public function getTransId(){
 
         return $this->trans_id;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getAccountNum(){
 
         return $this->acc_number;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getTransType(){
 
         return $this->trans_type;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getAmount(){
 
         return $this->amount;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getBalance(){
 
         return $this->balance;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getReference(){
 
         return $this->reference;
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getCreatedAt(){
 
         return $this->created_at;
 
     }
 
-
+    /**
+     * @param $trans_id int Transaction ID
+     * @return $this TransactionModel
+     */
     public function setTransId($trans_id){
 
         $this->trans_id = $trans_id;
@@ -77,6 +118,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $acc_num string Account Number
+     * @return $this TransactionModel
+     */
     public function setAccountNum($acc_num){
 
         $this->acc_number = $acc_num;
@@ -85,6 +130,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $trans_type string Transactio Type
+     * @return $this TransactionModel
+     */
     public function setTransType($trans_type){
 
         $this->trans_type = $trans_type;
@@ -93,6 +142,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $amount string Transaction amount
+     * @return $this TransactionModel
+     */
     public function setAmount($amount){
 
         $this->amount = $amount;
@@ -101,6 +154,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $balance string
+     * @return $this TransactionModel
+     */
     public function setBalance($balance){
 
         $this->balance = $balance;
@@ -109,6 +166,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $reference
+     * @return $this TransactionModel
+     */
     public function setReference($reference){
 
         $this->reference = $reference;
@@ -117,6 +178,10 @@ class TransactionModel extends Model{
 
     }
 
+    /**
+     * @param $created_at
+     * @return $this TransactionModel
+     */
     public function setCreatedAt($created_at){
 
         $this->created_at = $created_at;
@@ -129,9 +194,9 @@ class TransactionModel extends Model{
     /**
      * Loads transaction information from the database
      *
-     * @param int $id Transaction ID
-     *
+     * @param $trans_id int Transaction ID
      * @return $this TransactionModel
+     * @throws BankExceptions
      */
     public function load($trans_id)
     {
@@ -142,7 +207,7 @@ class TransactionModel extends Model{
         $result = $result->fetch_assoc();
         $this->trans_id = $trans_id;
         $this->acc_number = $result['acc_number'];
-        $this->trans_type = $result['type'];
+        $this->trans_type = $result['trans_type'];
         $this->amount = $result['amount'];
         $this->balance = $result['balance'];
         $this->reference = $result['reference'];
@@ -152,8 +217,8 @@ class TransactionModel extends Model{
 
     /**
      * Saves account information to the database
-
-     * @return $this AccountModel
+     *
+     * @return $this TransactionModel
      */
     public function save()
     {

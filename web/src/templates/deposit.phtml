@@ -1,4 +1,4 @@
-<?php include "header.phtml" ?>
+<?php include "headerTeam.phtml" ?>
 
 <!DOCTYPE html>
 <html>
@@ -55,14 +55,17 @@
 
 <form action= "<?php $action; ?>" style="max-width:500px;margin:auto" method="POST">
     <h3>How much money would you like to deposit?</h3>
-    <?php echo "<h4>Current Balance is  $balance </h4>"; ?> 
+    <?php echo "<h4>Current Balance is $$balance </h4>"; ?> 
     <div class="input-container">
         <i class="fa fa-user icon"></i>
-        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)" required>
+        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)" onkeypress="return isNumber(event)" required>
     </div>
     <?php 
     if(strcmp($transaction,"")!==0){
-        echo '<font color="blue"><center>'. $transaction.' Thank you for using FNBank. </center></font><br>';
+        echo '<font color="blue"><center>'. $transaction.' Thank you for using FBBank. </center></font><br>';
+    }
+    if(strcmp($deposit_error,"")!==0){
+        echo '<font color="red"><center>'. $deposit_error.' Try again. </center></font><br>';
     }
     ?>
     <button type="submit" class="btn">Submit</button>
@@ -79,6 +82,17 @@
      input.setCustomValidity('');
    }
  }
+ function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode==46){
+        return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 </script>
 
 </body>

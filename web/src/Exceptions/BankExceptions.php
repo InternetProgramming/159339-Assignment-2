@@ -6,9 +6,16 @@
  * Time: 3:52 PM
  */
 
-namespace agilman\a2\Exceptions;
 
-
+namespace team\a2\Exceptions;
+/**
+ * Class CustomerController
+ *
+ * @package team\a2\controller
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
+ */
 class BankExceptions extends \Exception
 {
 

@@ -1,0 +1,118 @@
+<?php include "headerTeam.phtml" ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
+
+        .input-container {
+            display: -ms-flexbox; /* IE10 */
+            display: flex;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .icon {
+            padding: 10px;
+            background: #34495E;
+            color: white;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border: 2px solid dodgerblue;
+        }
+
+        /* Set a style for the submit button */
+        .btn {
+            background-color: #16A085;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        .btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<form action= "<?php $action; ?>" style="max-width:500px;margin:auto" method="POST">
+    <h3>Transfer</h3>
+    <?php echo "<h4>Current Balance is $$balance </h4>"; ?> 
+
+    <div class="input-container">
+        <i class="far fa-user icon"></i>
+        <input class="input-field" type="text" placeholder="Enter Account Number" onkeypress="return isNumber(event)" name="acc_num" required>
+    </div>
+    <div class="input-container">
+        <i class="fa fa-user icon"></i>
+        <input class="input-field" type="text" placeholder="Amount" name="amount" onkeypress="return isNumber(event)" oninput="check(this)" required>
+    </div>
+
+    <div class="input-container">
+        <i class="fas fa-user-shield icon"></i>
+        <input class="input-field" type="text" placeholder="Reference on their statement" name="reference2" required>
+    </div>
+
+    <div class="input-container">
+        <i class="fa fa-envelope icon"></i>
+        <input class="input-field" type="text" placeholder="Reference on your statement" name="reference1" required>
+    </div>
+    <?php 
+    if(strcmp($transfer_error,"")!==0){
+        echo '<font color="red"><center>'. $transfer_error.' Try again. </center></font><br>';
+    }
+    if(strcmp($transaction,"")!==0){
+        echo '<font color="blue"><center>'. $transaction.' Thank you for using FBBank. </center></font><br>';
+    }
+    ?>
+    <button type="submit" class="btn">Submit</button>
+    <div class="container withdraw">
+        <p>Go back to account page <a href=<?= $linkTo('accountIndex'); ?>>back</a>.</p>
+    </div>
+</form>
+<script>
+// even cannot type '-' 
+ function check(input) {
+   if (input.value < 0) {
+     input.setCustomValidity('The number must be greater than zero.');
+   } else {
+     // input is fine -- reset the error message
+     input.setCustomValidity('');
+   }
+ }
+
+  function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode==46){
+        return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+</script>
+
+</body>
+</html>
+
+<?php include "footer.phtml" ?>

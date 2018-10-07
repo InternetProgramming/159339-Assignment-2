@@ -1,18 +1,25 @@
 <?php
-namespace agilman\a2\controller;
-use agilman\a2\view\View;
+/*
+Junghoe Hwang	16242934
+Robert Harper	96066910
+Erdem Alpkaya	16226114
+
+*/
+namespace team\a2\controller;
+use team\a2\view\View;
 
 
 /**
  * Class HomeController
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\controller
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class HomeController extends Controller
 {
     /**
-     * Account Index action
+     * Action work when user on Home page
      */
     public function indexAction()
     {

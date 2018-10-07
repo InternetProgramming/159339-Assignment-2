@@ -1,18 +1,28 @@
 <?php
-namespace agilman\a2\controller;
-use agilman\a2\model\{AccountModel, AccountCollectionModel};
-use agilman\a2\view\View;
+/*
+Junghoe Hwang	16242934
+Robert Harper	96066910
+Erdem Alpkaya	16226114
+
+*/
+namespace team\a2\controller;
+use team\a2\model\{AccountModel, AccountCollectionModel};
+use team\a2\view\View;
 
 /**
  * Class AccountController
  *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\controller
+ * @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class AccountController extends Controller
 {
     /**
-     * Account Index action
+     * Account Index Action
+     *
+     * @throws \team\a2\Exceptions\BankExceptions
      */
     public function indexAction()
     {
@@ -59,8 +69,11 @@ class AccountController extends Controller
         }
 
     }
+
     /**
-     * Account Create action
+     * Account create Action
+     *
+     * @throws \team\a2\Exceptions\BankExceptions
      */
     public function createAction()
     {
@@ -123,9 +136,10 @@ class AccountController extends Controller
     }
 
     /**
-     * Account Delete action
+     * Account delete action
      *
      * @param int $id Account id to be deleted
+     * @throws \team\a2\Exceptions\BankExceptions
      */
     public function deleteAction($id)
     {
@@ -178,10 +192,12 @@ class AccountController extends Controller
         }
 
     }
+
     /**
-     * Account Update action
+     * Account update action
      *
      * @param int $id Account id to be updated
+     * @throws \team\a2\Exceptions\BankExceptions
      */
     public function updateAction($id)
     {

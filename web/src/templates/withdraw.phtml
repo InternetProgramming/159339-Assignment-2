@@ -1,4 +1,4 @@
-<?php include "header.phtml" ?>
+<?php include "headerTeam.phtml" ?>
 
 <!DOCTYPE html>
 <html>
@@ -55,10 +55,10 @@
 
 <form action= "<?php $action; ?>" style="max-width:500px;margin:auto" method="POST">
     <h3>How much money would you like to withdraw?</h3>
-    <?php echo "<h4>Current Balance is  $balance </h4>"; ?> 
+    <?php echo "<h4>Current Balance is $$balance </h4>"; ?> 
     <div class="input-container">
         <i class="fa fa-user icon"></i>
-        <input class="input-field" type="text" placeholder="Amount" name="amount" oninput="check(this)" required>
+        <input class="input-field" type="text" placeholder="Amount" name="amount" onkeypress="return isNumber(event)" oninput="check(this)" required>
     </div>
     <?php 
     if(strcmp($withdraw_error,"")!==0){
@@ -74,14 +74,25 @@
     </div>
 </form>
 <script>
- function check(input) {
-   if (input.value < 0) {
-     input.setCustomValidity('The number must be greater than zero.');
-   } else {
-     // input is fine -- reset the error message
-     input.setCustomValidity('');
-   }
- }
+function check(input) {
+    if (input.value < 0) {
+            input.setCustomValidity('The number must be greater than zero.');
+    } else {
+            // input is fine -- reset the error message
+        input.setCustomValidity('');
+    }
+}
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode==46){
+        return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 </script>
 
 </body>

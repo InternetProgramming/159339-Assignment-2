@@ -1,13 +1,14 @@
 <?php
-namespace agilman\a2\model;
-use agilman\a2\Exceptions\BankExceptions;
+namespace team\a2\model;
+use team\a2\Exceptions\BankExceptions;
 
 
 /**
  * Class AccountModel
- *
- * @package agilman/a2
- * @author  Andrew Gilman <a.gilman@massey.ac.nz>
+ * @package team\a2\model
+ *  @author Junghoe Hwang
+ * @author Robert Harper
+ * @author Erdem Alpkaya
  */
 class AccountModel extends Model
 {
@@ -20,8 +21,14 @@ class AccountModel extends Model
      */
     private $acc_cus;
 
+    /**
+     * @var
+     */
     private $balance;
 
+    /**
+     * @var
+     */
     private $created_at;
 
 
@@ -69,6 +76,10 @@ class AccountModel extends Model
         return $this;
     }
 
+    /**
+     * @param $cust_id
+     * @return $this
+     */
     public function setCustomerId($cust_id)
     {
         $this->acc_cus = $cust_id;
@@ -76,6 +87,10 @@ class AccountModel extends Model
         return $this;
     }
 
+    /**
+     * @param $bal
+     * @return $this
+     */
     public function setBalance($bal)
     {
         $this->balance = $bal;
@@ -83,6 +98,11 @@ class AccountModel extends Model
         return $this;
     }
 
+
+    /**
+     * @param $time
+     * @return $this
+     */
     public function setCreatedAt($time)
     {
         $this->created_at = $time;
@@ -101,10 +121,9 @@ class AccountModel extends Model
      */
     public function load($acc_num)
     {
-        //if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num' and `disabled` =0")) {
-        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num'")) {
+        if (!$result = $this->db->query("SELECT * FROM `account` WHERE `acc_number` = '$acc_num' and `disabled` = 0;")) {
             throw new BankExceptions("No Result");
-        }
+        } 
         $result = $result->fetch_assoc();
         $this->acc_number = $result['acc_number'];
         $this->acc_cus = $result['acc_cus'];
@@ -115,6 +134,8 @@ class AccountModel extends Model
 
     /**
      * Saves account information to the database
+     *
+     *
      * @return $this AccountModel
      * @throws BankExceptions
      */
@@ -125,7 +146,6 @@ class AccountModel extends Model
         $created_at = $this->created_at;
         if (!isset($this->acc_number)) {
             // New account - Perform INSERT
-           // if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at', 0);")) {
             if (!$result = $this->db->query("INSERT INTO `account` VALUES (NULL,'$acc_cus','$balance', '$created_at', 0);")) {
                 throw new BankExceptions("No account for insertion data");
             }
@@ -143,6 +163,8 @@ class AccountModel extends Model
 
     /**
      * Deletes account from the database
+     *
+     *
      * @return $this AccountModel
      * @throws BankExceptions
      */
